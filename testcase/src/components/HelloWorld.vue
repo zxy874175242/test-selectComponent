@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
-    <select-person :res-list="resList" :chosen-list="chosenList"></select-person>
+    {{chosenList}}
+    <select-person :res-list="resList" :chosen-list.sync="chosenList"></select-person>
   </div>
 </template>
 
@@ -15,7 +16,7 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       resList: [],
-      chosenList: [1,2],
+      chosenList: [],
     }
   },
   created() {
@@ -51,10 +52,10 @@ a {
   color: #42b983;
 }
 .hello{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*justify-content: center;*/
+  /*align-items: center;*/
   font-family: ‘Noto Sans SC’;
   font-weight: normal;
 }

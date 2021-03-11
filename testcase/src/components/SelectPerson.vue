@@ -10,12 +10,12 @@
         <div class="delete-icon"><i class="el-icon-close"></i></div>
       </div>
 <!--      <button class="button-circle" @click="isSelect = ! isSelect"><i class="el-icon-edit"></i></button>-->
-      <el-button style="margin-left: 15px" size="small" type="primary" circle @click="isSelect = ! isSelect"><i class="el-icon-edit"></i></el-button>
+      <el-button style="margin-left: 15px" size="small" type="primary" circle @click="toSelect"><i class="el-icon-edit"></i></el-button>
     </div>
     <transition name="slide-fade">
       <div class="select-mode" v-if="isSelect">
       <el-input
-        placeholder="请输入内容"
+        placeholder="搜索"
         prefix-icon="el-icon-search"
         v-model="input">
       </el-input>
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div style="flex: 1"></div>
-      <el-button type="primary" style="width: 100%;margin-bottom: 0" @click="isSelect = false">确定</el-button>
+      <el-button type="primary" style="width: 100%;margin-bottom: 0" @click="applyRes">确定</el-button>
 
     </div>
     </transition>
@@ -53,7 +53,7 @@ export default {
     input(val,oldVal) {
       let keyY = new RegExp(val,'gm')
       this.searchResList = this.resList.filter(e =>  keyY.test(e.name) );
-      console.log('change',this.searchResList);
+      // console.log('change',this.searchResList);
     },
     resList(val,oldVal){
       this.initData();
@@ -66,17 +66,13 @@ export default {
 
 
     let _this = this;
-    this.value = this.chosenList;
+    this.value = [...this.chosenList];
+    // this.value = this.chosenList;
 
 
-    this.$nextTick(() => {
-      console.log("resList",_this.resList);
-      console.log("chosenList",_this.value);
-      if(this.resList !== null){
-        _this.chosenListFull = _this.resList.filter(e => _this.value.indexOf(e.id) !== -1);
-      }
-      console.log("chosenListFull",_this.chosenListFull);
-    });
+    if(this.resList !== null){
+      _this.chosenListFull = _this.resList.filter(e => _this.value.indexOf(e.id) !== -1);
+    }
 
   },
   methods: {
@@ -91,7 +87,17 @@ export default {
       }else {
         this.value.splice(num,1);
       }
+      this.$emit('update:chosenList',[...this.value]);
+
     },
+    applyRes(){
+      this.isSelect = false;
+      // this.$emit('update:chosenList',[...this.value]);
+    },
+    toSelect(){
+      this.isSelect = !this.isSelect;
+      // this.$emit('update:chosenList',[...this.value]);
+    }
   }
 }
 </script>
